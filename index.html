@@ -250,22 +250,22 @@
     }
 
     function addFiles(files) {
-        let added = 0;
-        for (let f of files) {
-            if (f.type === 'application/pdf') {
-                pdfFiles.push(f);
-                added++;
-            } else {
-                showMessage(`跳过非PDF: ${f.name}`, true);
-            }
-        }
-        if (added) {
-            renderFileList();
-            showMessage(`成功添加 ${added} 个PDF，共 ${pdfFiles.length} 个`);
-        } else if (files.length > 0) {
-            showMessage('请选择PDF文件', true);
+    let added = 0;
+    for (let f of files) {
+        if (f.type === 'application/pdf') {
+            pdfFiles.push(f);
+            added++;
+        } else {
+            showMessage(`跳过非PDF: ${f.name}`, true);
         }
     }
+    if (added) {
+        renderFileList();
+        showMessage(`✅ 成功添加 ${added} 个PDF，共 ${pdfFiles.length} 个文件`);
+    } else if (files.length > 0) {
+        showMessage('请选择PDF文件', true);
+    }
+}
 
     // 拖拽上传
     dropZone.addEventListener('dragover', (e) => {
@@ -282,10 +282,11 @@
     });
 
     fileInput.addEventListener('change', (e) => {
-        if (e.target.files.length) addFiles(e.target.files);
-        fileInput.value = '';
-    });
-
+    if (e.target.files.length) {
+        addFiles(e.target.files);
+    }
+    fileInput.value = ''; // 清空input，允许重复选择同一个文件
+});
     // 合并
     mergeBtn.addEventListener('click', async () => {
         if (pdfFiles.length < 2) {
