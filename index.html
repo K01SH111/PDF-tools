@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>免费PDF工具箱 - 手机修复版 | 不上传文件</title>
+    <title>免费PDF工具箱 - 支持WPS/微信 | 不上传文件</title>
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <style>
@@ -15,9 +15,9 @@
             padding: 16px;
             color: #1e293b;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 800px; margin: 0 auto; }
         h1 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             text-align: center;
             margin-bottom: 0.5rem;
             display: flex;
@@ -29,31 +29,36 @@
         .badge {
             background: #10b981;
             color: white;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             padding: 4px 12px;
             border-radius: 40px;
         }
-        .sub {
-            text-align: center;
-            color: #475569;
-            margin-bottom: 24px;
-            font-size: 0.9rem;
+        .tips-box {
+            background: #fef9e3;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+        }
+        .tips-box p {
+            margin: 6px 0;
         }
         .toolbar {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
         button {
             background: white;
             border: 1px solid #cbd5e1;
-            padding: 12px 20px;
+            padding: 10px 18px;
             border-radius: 40px;
             font-weight: 600;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             touch-action: manipulation;
         }
         button.primary {
@@ -66,20 +71,12 @@
             border-color: #ef4444;
             color: white;
         }
-        .upload-area {
-            background: #ffffff;
-            border: 2px dashed #cbd5e1;
-            border-radius: 24px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 25px;
-        }
         .file-list {
             background: white;
             border-radius: 20px;
             padding: 16px;
             margin-bottom: 20px;
-            max-height: 350px;
+            max-height: 300px;
             overflow-y: auto;
         }
         .file-item {
@@ -88,25 +85,19 @@
             align-items: center;
             padding: 10px 0;
             border-bottom: 1px solid #eef2ff;
-            gap: 8px;
         }
         .file-name {
             font-size: 0.85rem;
             word-break: break-word;
             flex: 1;
         }
-        .file-size {
-            font-size: 0.7rem;
-            color: #64748b;
-        }
         .remove-btn {
             background: #fee2e2;
             border: none;
             color: #ef4444;
             border-radius: 40px;
-            padding: 6px 14px;
-            font-size: 0.75rem;
-            cursor: pointer;
+            padding: 4px 12px;
+            font-size: 0.7rem;
         }
         .result-area {
             background: #f8fafc;
@@ -118,33 +109,31 @@
         .donate {
             background: white;
             border-radius: 24px;
-            padding: 24px;
-            margin-top: 40px;
+            padding: 20px;
+            margin-top: 30px;
             text-align: center;
-            border: 1px solid #e2e8f0;
         }
         footer {
             text-align: center;
-            font-size: 0.75rem;
-            color: #94a3b8;
-            margin-top: 40px;
-        }
-        .debug-info {
             font-size: 0.7rem;
-            color: #2563eb;
-            text-align: center;
-            margin-top: 10px;
+            color: #94a3b8;
+            margin-top: 30px;
         }
         @media (max-width: 640px) {
-            body { padding: 12px; }
-            button { padding: 12px 16px; font-size: 0.9rem; }
+            button { padding: 10px 14px; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
 <h1>📄 免费PDF工具箱 <span class="badge">不上传文件</span></h1>
-    <div class="sub">手机修复版 · 文件只留在你的设备</div>
+
+    <!-- 重要提示：WPS和微信用户 -->
+    <div class="tips-box">
+        <p><strong>📱 WPS用户：</strong> 请先在WPS里「分享」→「保存到手机」，再从文件夹上传。</p >
+        <p><strong>💬 微信用户：</strong> 点击右上角「···」→「在浏览器中打开」获得完整功能。</p >
+        <p><strong>✅ 提示：</strong> 可多次点击「添加PDF」，不会覆盖已有文件。</p >
+    </div>
 
     <div class="toolbar">
         <input type="file" id="fileInput" multiple accept=".pdf" style="display:none;">
@@ -155,26 +144,14 @@
         <button id="clearAllBtn" class="danger">🗑️ 清空</button>
     </div>
 
-    <div class="upload-area" id="dropZone">
-        👆 点击「添加PDF文件」按钮<br>
-        可多次添加，不会覆盖已有文件
-    </div>
-
-    <div class="file-list" id="fileList">
-        📭 暂无文件
-    </div>
-
-    <div class="result-area" id="resultMsg">
-        ✅ 就绪
-    </div>
+    <div class="file-list" id="fileList">📭 暂无文件</div>
+    <div class="result-area" id="resultMsg">✅ 就绪</div>
 
     <div class="donate">
-        💖 如果帮你省了时间<br>
-        <div id="donateText">🍵 微信赞赏码加载中...</div>
-        <p style="font-size:12px;">扫一扫，请我喝杯奶茶 ☕</p >
+        💖 如果帮到你<br>
+        <div id="donateText">🍵 赞赏码加载中...</div>
     </div>
-    <footer>纯本地处理 · 不上传服务器</footer>
-    <div class="debug-info" id="debugInfo"></div>
+    <footer>纯本地处理 · 文件不上传服务器</footer>
 </div>
 
 <script>
@@ -187,14 +164,11 @@
     const extractBtn = document.getElementById('extractBtn');
     const clearAllBtn = document.getElementById('clearAllBtn');
     const resultMsg = document.getElementById('resultMsg');
-    const debugInfo = document.getElementById('debugInfo');
 
     function showMessage(msg, isError = false) {
         resultMsg.innerHTML = isError ? `⚠️ ${msg}` : `✅ ${msg}`;
         setTimeout(() => {
-            if (resultMsg.innerHTML === `✅ ${msg}`) {
-                resultMsg.innerHTML = '✨ 就绪';
-            }
+            if (resultMsg.innerHTML === `✅ ${msg}`) resultMsg.innerHTML = '✨ 就绪';
         }, 2500);
     }
 
@@ -203,15 +177,12 @@
             fileListDiv.innerHTML = '📭 暂无文件';
             return;
         }
-        let html = `<strong>📎 共 ${pdfFiles.length} 个文件</strong><br><br>`;
+        let html = `<strong>📎 ${pdfFiles.length} 个文件</strong><br><br>`;
         pdfFiles.forEach((file, idx) => {
             const sizeKB = (file.size / 1024).toFixed(1);
             html += `
                 <div class="file-item">
-                    <div>
-                        <div class="file-name">📄 ${escapeHtml(file.name)}</div>
-                        <div class="file-size">${sizeKB} KB</div>
-                    </div>
+                    <div class="file-name">📄 ${escapeHtml(file.name)} (${sizeKB}KB)</div>
                     <button class="remove-btn" data-index="${idx}">删除</button>
                 </div>
             `;
@@ -222,59 +193,59 @@
                 const idx = parseInt(btn.getAttribute('data-index'));
                 pdfFiles.splice(idx, 1);
                 renderFileList();
-                showMessage(`已移除，剩余 ${pdfFiles.length} 个文件`);
+                showMessage(`已移除，剩余 ${pdfFiles.length} 个`);
             });
         });
     }
 
     function escapeHtml(str) {
         return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
+            return m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;');
         });
     }
 
-    // 添加文件（追加，不覆盖）
-    function addFiles(files) {
+    async function addFiles(files) {
         let added = 0;
+        let invalid = 0;
         for (let f of files) {
             if (f.type === 'application/pdf') {
-                pdfFiles.push(f);
-                added++;
+                // 额外验证：尝试读取文件头
+                try {
+                    const buffer = await f.slice(0, 5).arrayBuffer();
+                    const header = String.fromCharCode(...new Uint8Array(buffer));
+                    if (header.includes('%PDF')) {
+                        pdfFiles.push(f);
+                        added++;
+                    } else {
+                        invalid++;
+                    }
+                } catch(e) {
+                    invalid++;
+                }
             } else {
                 showMessage(`跳过非PDF: ${f.name}`, true);
             }
         }
         if (added) {
             renderFileList();
-            showMessage(`✅ 添加了 ${added} 个PDF，共 ${pdfFiles.length} 个`);
-            debugInfo.innerText = `[调试] 成功添加 ${added} 个文件，总文件数: ${pdfFiles.length}`;
-        } else if (files.length > 0) {
-            showMessage('请选择PDF文件', true);
-            debugInfo.innerText = `[调试] 选择了 ${files.length} 个文件，但没有有效的PDF`;
+            showMessage(`✅ 添加 ${added} 个PDF，共 ${pdfFiles.length} 个`);
         }
+        if (invalid > 0) {
+            showMessage(`⚠️ ${invalid} 个文件无效，可能来自WPS，请先「保存到手机」再上传`, true);
+}
     }
 
-    // 点击添加按钮
     addFileBtn.addEventListener('click', () => {
-        debugInfo.innerText = '[调试] 点击了添加按钮，准备打开文件选择器';
         fileInput.click();
     });
 
-    // 文件选择后处理（关键修复：每次都是追加）
     fileInput.addEventListener('change', (e) => {
-        debugInfo.innerText = `[调试] 文件选择器已关闭，选择了 ${e.target.files.length} 个文件`;
         if (e.target.files.length > 0) {
             addFiles(e.target.files);
-        } else {
-            debugInfo.innerText = '[调试] 没有选择任何文件';
         }
-        fileInput.value = ''; // 清空，允许重复添加同一个文件
+        fileInput.value = '';
     });
 
-    // 清空
     clearAllBtn.addEventListener('click', () => {
         if (pdfFiles.length === 0) {
             showMessage('没有文件可清空', true);
@@ -282,17 +253,15 @@
         }
         pdfFiles = [];
         renderFileList();
-        showMessage('已清空所有文件');
-        debugInfo.innerText = '[调试] 已清空文件列表';
+        showMessage('已清空');
     });
 
-    // 合并
-mergeBtn.addEventListener('click', async () => {
+    mergeBtn.addEventListener('click', async () => {
         if (pdfFiles.length < 2) {
-            showMessage(`至少需要2个PDF，当前只有 ${pdfFiles.length} 个`, true);
+            showMessage(`至少需要2个PDF，当前 ${pdfFiles.length} 个`, true);
             return;
         }
-        showMessage(`🔄 合并 ${pdfFiles.length} 个文件...`);
+        showMessage(`🔄 合并中...`);
         try {
             const { PDFDocument } = PDFLib;
             const mergedPdf = await PDFDocument.create();
@@ -305,20 +274,19 @@ mergeBtn.addEventListener('click', async () => {
             const pdfBytes = await mergedPdf.save();
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             saveAs(blob, `merged_${Date.now()}.pdf`);
-            showMessage(`🎉 合并成功！已下载`);
+            showMessage(`🎉 合并成功！`);
         } catch (err) {
-            showMessage('合并失败，文件可能过大', true);
+            showMessage('合并失败，文件可能损坏或过大', true);
         }
     });
 
-    // 压缩（使用第一个文件）
     compressBtn.addEventListener('click', async () => {
         if (pdfFiles.length === 0) {
             showMessage('请先添加PDF', true);
             return;
         }
         const file = pdfFiles[0];
-        showMessage(`压缩中: ${file.name}`);
+        showMessage(`压缩中...`);
         try {
             const { PDFDocument } = PDFLib;
             const arrayBuffer = await file.arrayBuffer();
@@ -332,51 +300,48 @@ mergeBtn.addEventListener('click', async () => {
         }
     });
 
-    // 提取页面（使用第一个文件）
     extractBtn.addEventListener('click', async () => {
         if (pdfFiles.length === 0) {
             showMessage('请先添加PDF', true);
             return;
         }
-        const pageInput = prompt('输入页码，如 1,3,5 或 2-4');
-        if (!pageInput) return;
+        const input = prompt('输入页码，如 1,3,5 或 2-4');
+        if (!input) return;
         const file = pdfFiles[0];
         try {
             const { PDFDocument } = PDFLib;
             const arrayBuffer = await file.arrayBuffer();
             const srcDoc = await PDFDocument.load(arrayBuffer);
-            const totalPages = srcDoc.getPageCount();
-            let pagesToExtract = [];
-            const parts = pageInput.split(',');
+            const total = srcDoc.getPageCount();
+            let pages = [];
+            const parts = input.split(',');
             for (let part of parts) {
                 part = part.trim();
                 if (part.includes('-')) {
-                    let [start, end] = part.split('-').map(Number);
-                    for (let i = start; i <= end; i++) pagesToExtract.push(i);
+                    let [s, e] = part.split('-').map(Number);
+                    for (let i = s; i <= e; i++) pages.push(i);
                 } else {
                     let p = parseInt(part);
-                    if (!isNaN(p)) pagesToExtract.push(p);
+                    if (!isNaN(p)) pages.push(p);
                 }
             }
-            pagesToExtract = pagesToExtract.filter(p => p >= 1 && p <= totalPages);
-            if (pagesToExtract.length === 0) throw new Error();
+            pages = pages.filter(p => p >= 1 && p <= total);
+            if (pages.length === 0) throw new Error();
             const newPdf = await PDFDocument.create();
-            const copyPages = await newPdf.copyPages(srcDoc, pagesToExtract.map(p => p-1));
+            const copyPages = await newPdf.copyPages(srcDoc, pages.map(p => p-1));
             copyPages.forEach(page => newPdf.addPage(page));
             const pdfBytes = await newPdf.save();
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             saveAs(blob, `extracted_${file.name}`);
-            showMessage(`提取成功！共${pagesToExtract.length}页`);
+            showMessage(`提取成功！${pages.length}页`);
         } catch (err) {
             showMessage('提取失败', true);
         }
     });
 
-    // 赞赏码（需要仓库根目录有 zan.png）
+    // 赞赏码
     const donateDiv = document.getElementById('donateText');
-    donateDiv.innerHTML = '< img src="zan.png" width="140" style="border-radius:16px; margin-top:8px;"><p style="font-size:13px;">微信扫一扫，请喝奶茶 ☕</p >';
-    
-    debugInfo.innerText = '[调试] 页面加载完成，点击“添加PDF文件”即可选择文件';
+    donateDiv.innerHTML = '< img src="zan.png" width="130" style="border-radius:16px;"><p style="font-size:12px;">微信扫一扫，请喝奶茶 ☕</p >';
 </script>
 </body>
 </html>
