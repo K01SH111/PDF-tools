@@ -834,65 +834,65 @@
     });
 
     // ========== 企业微信反馈功能 ==========
-    // ⚠️ 重要：请将下面的 WEBHOOK_URL 替换成你自己的企业微信机器人地址！
-    const WEBHOOK_URL = 'https://feedback.3064541672.workers.dev';
+// 您的 Cloudflare Worker 地址（已配置好）
+const WEBHOOK_URL = 'https://feedback.3064541672.workers.dev';
 
-    // 显示提示消息
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'feedback-toast';
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
-    }
+// 显示提示消息
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'feedback-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
 
-    // 提交反馈到企业微信
-    async function submitToWeChat(feedbackData) {
-        const typeMap = {
-            suggestion: '✨ 功能建议',
-            bug: '🐛 Bug报告',
-            question: '❓ 使用问题',
-            other: '📝 其他'
-        };
+// 提交反馈到企业微信
+async function submitToWeChat(feedbackData) {
+    const typeMap = {
+        suggestion: '✨ 功能建议',
+        bug: '🐛 Bug报告',
+        question: '❓ 使用问题',
+        other: '📝 其他'
+    };
 
-        const message = {
-            msgtype: 'text',
-            text: {
-                content: `📢 【PDF工具箱】收到新反馈\n\n` +
-                    `类型：${typeMap[feedbackData.type] || feedbackData.type}\n` +
-                    `标题：${feedbackData.title || '无'}\n` +
-                    `内容：${feedbackData.content}\n` +
-                    `联系方式：${feedbackData.contact || '未留'}\n` +
-                    `时间：${new Date().toLocaleString()}\n` +
-                    `来源：PDF工具箱网页版`
-            }
-        };
+    const message = {
+        msgtype: 'text',
+        text: {
+            content: `📢 【PDF工具箱】收到新反馈\n\n` +
+                `类型：${typeMap[feedbackData.type] || feedbackData.type}\n` +
+                `标题：${feedbackData.title || '无'}\n` +
+                `内容：${feedbackData.content}\n` +
+                `联系方式：${feedbackData.contact || '未留'}\n` +
+                `时间：${new Date().toLocaleString()}\n` +
+                `来源：PDF工具箱网页版`
+        }
+    };
 
-        try {
-            const response = await fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(message)
-            });
-            
-            const result = await response.json();
-            
-            if (result.errcode === 0) {
-                showToast('感谢您的反馈！已收到 ❤️');
-                return true;
-            } else {
-                console.error('企业微信返回错误:', result);
-                showToast('发送失败，请稍后重试');
-                return false;
-            }
-        } catch (error) {
-            console.error('反馈发送错误:', error);
-            showToast('网络错误，请检查网络后重试');
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(message)
+        });
+        
+        const result = await response.json();
+        
+        if (result.errcode === 0) {
+            showToast('感谢您的反馈！已收到 ❤️');
+            return true;
+        } else {
+            console.error('企业微信返回错误:', result);
+            showToast('发送失败，请稍后重试');
             return false;
         }
+    } catch (error) {
+        console.error('反馈发送错误:', error);
+        showToast('网络错误，请检查网络后重试');
+        return false;
     }
+}
 
     // 反馈功能DOM元素
     const feedbackModal = document.getElementById('feedbackModal');
